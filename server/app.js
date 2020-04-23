@@ -5,7 +5,14 @@ const app = express();
 // Import Routes from Routes folder
 const usersRoutes = require('./routes/usersRoutes');
 
-app.use('/api', usersRoutes);
+// body-parser middleware
+// middleware is parsed from top to bottom in this file, so we want to parse the body here before we parse any routes
+// this will convert any json data into javascript useable items like arrays and objects
+// next() is automatically called by this middleware and will pass the data on to the other middleware automatically
+app.use(bodyParser.json());
+
+
+app.use('/api/user/', usersRoutes);
 
 //==================
 //  Error Handling

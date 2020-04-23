@@ -1,4 +1,5 @@
 const HttpError = require('../models/httpError');
+const uuid = require('uuid/v4');
 
 const DUMMY_USERS = [
     {
@@ -46,6 +47,27 @@ const getUserByEmail = (req,res,next) => {
     res.json({user: user}); // {user} would work too, since the key and value are the same
 }
 
+const createUser = (req,res,next) => {
+// remember, GET requests do not have a body, but POST requests do
+// we will use object destructuring to store data pulled from the object as constants
+    const { id, firstName, lastName, dob, email } = req.body;
+    // shortcut instead of doing:
+    // const firstName = req.body.firstName;
+    const createdUser = {
+        //remember, instead of { title: title }, we can just do { title } since the key value are both the same
+        id: uuid(), //generates a unique id
+        firstName, 
+        lastName, 
+        dob, 
+        email
+    }
+    // add the createdUser object to our existing array of user objects, DUMMY_USERS
+    DUMMY_USERS.push(createdUser);
+    res.status(201).json({user: createdUser});
+    
+}
+
 
 exports.getUserById = getUserById;
 exports.getUserByEmail = getUserByEmail;
+exports.createUser = createUser;
