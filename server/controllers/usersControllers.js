@@ -1,7 +1,10 @@
 const HttpError = require('../models/httpError');
-const uuid = require('uuid/v4');
+// const uuid = require('uuid/v4');
+// import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
-const DUMMY_USERS = [
+let DUMMY_USERS = [
     {
         id: 'u1',
         firstName: 'John',
@@ -55,7 +58,7 @@ const createUser = (req,res,next) => {
     // const firstName = req.body.firstName;
     const createdUser = {
         //remember, instead of { title: title }, we can just do { title } since the key value are both the same
-        id: uuid(), //generates a unique id
+        id: uuidv4(), //generates a unique id
         firstName, 
         lastName, 
         dob, 
@@ -67,7 +70,32 @@ const createUser = (req,res,next) => {
     
 }
 
+const deleteUser = (req,res,next) => {
+    const userId = req.params.uid;
+    DUMMY_USERS = DUMMY_USERS.filter(eachUser => eachUser.id !== userId);
+    res.status(200).json({message: 'Deleted user.'});
+}
+
+const updateUser = (req,res,next) => {
+    const { firstName, lastName, dob, email } = req.body;
+    const userId = req.params.uid;
+    // Update the Object IMMUTABLY
+    const updatedUser = { ...DUMMY_USERS.find(eachUser => eachUser.id === userId)};
+    const userIndex = DUMMY_USERS.findIndex(eachUser => eachUser.id === userId);
+    // Update the old values with new values
+    updatedUser.firstName = firstName;
+    updatedUser.lastName = lastName;
+    updatedUser.dob = dob;
+    updatedUser.email = email;
+    // replace the old place object with the new one
+    DUMMY_USERS[userIndex] = updatedUser;
+
+    res.status(200).json({user: updatedUser}); // 200 since nothing new was created
+}
+
 
 exports.getUserById = getUserById;
 exports.getUserByEmail = getUserByEmail;
 exports.createUser = createUser;
+exports.deleteUser = deleteUser;
+exports.updateUser = updateUser;
