@@ -4,7 +4,7 @@ const router = express.Router();
 
 const usersControllers = require('../controllers/usersControllers');
 
-// remember, the root of this route is '/api/'
+// remember, the root of this route is '/api/user/'
 //              /api/user/id/
 router.get('/id/:uid', usersControllers.getUserById);
 
