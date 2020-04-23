@@ -46,5 +46,6 @@ const getUserByEmail = (req,res,next) => {
     res.json({user: user}); // {user} would work too, since the key and value are the same
 }
 
+
 exports.getUserById = getUserById;
 exports.getUserByEmail = getUserByEmail;
