@@ -1,7 +1,6 @@
 const express = require('express');
-
 const router = express.Router();
-
+const { check } = require('express-validator'); //check is used for validation
 const usersControllers = require('../controllers/usersControllers');
 
 //===========================================================
@@ -22,7 +21,24 @@ router.get('/email/:uemail', usersControllers.getUserByEmail);
 //                  Create a User
 //===========================================================
 //typically the identifying data is encoded into the URL, and the data with which you work is encoded into the request body, as below
-router.post('/signup', usersControllers.userSignUp);
+router.post('/signup',
+    [
+        check('firstName')
+            .not()
+            .isEmpty(),
+        check('lastName')
+            .not()
+            .isEmpty(),
+        check('dob')
+            .not()
+            .isEmpty(),
+        check('email')
+            .normalizeEmail()
+            .isEmail(),
+        check('password').isLength({ min: 6})
+    ],
+    usersControllers.userSignUp
+);
 
 
 //===========================================================
@@ -34,7 +50,23 @@ router.delete('/id/:uid', usersControllers.deleteUser);
 //===========================================================
 //                  Update User Information
 //===========================================================
-router.patch('/id/:uid', usersControllers.updateUser);
+router.patch('/id/:uid',
+    [
+        check('firstName')
+            .not()
+            .isEmpty(),
+        check('lastName')
+            .not()
+            .isEmpty(),
+        check('dob')
+            .not()
+            .isEmpty(),
+        check('email')
+            .normalizeEmail()
+            .isEmail(),
+        check('password').isLength({ min: 6})        
+    ],
+    usersControllers.updateUser);
 
 //===========================================================
 //                  Get All Users
@@ -47,9 +79,5 @@ router.get('/getall', usersControllers.getAllUsers);
 //===========================================================
 router.post('/login', usersControllers.userLogin);
 
-//===========================================================
-//                  User Signup
-//===========================================================
-// router.post('/signup', usersControllers.userSignUp);
 
 module.exports = router; // we export this to our app.js file
