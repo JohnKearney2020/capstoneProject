@@ -13,7 +13,7 @@ const usersRoutes = require('./routes/usersRoutes');
 app.use(bodyParser.json());
 
 
-app.use('/api/user/', usersRoutes);
+app.use('/api/users/', usersRoutes);
 
 //==================
 //  Error Handling

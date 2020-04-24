@@ -10,7 +10,8 @@ let DUMMY_USERS = [
         firstName: 'John',
         lastName: 'Kearney',
         dob: '12/27/1984',
-        email: 'jk242903@gmail.com'
+        email: 'jk242903@gmail.com',
+        password: 'testPass123'
     }
 ];
 
@@ -50,19 +51,22 @@ const getUserByEmail = (req,res,next) => {
     res.json({user: user}); // {user} would work too, since the key and value are the same
 }
 
-const createUser = (req,res,next) => {
+const userSignUp = (req,res,next) => {
 // remember, GET requests do not have a body, but POST requests do
 // we will use object destructuring to store data pulled from the object as constants
-    const { id, firstName, lastName, dob, email } = req.body;
-    // shortcut instead of doing:
-    // const firstName = req.body.firstName;
+    const { firstName, lastName, dob, email, password } = req.body;
+    const emailAlreadyTaken = DUMMY_USERS.find(eachUser => eachUser.email === email);
+    if(emailAlreadyTaken){
+        throw new HttpError('Could not create user, email already taken.', 422); //422 typically used for invalid user input
+    }
     const createdUser = {
         //remember, instead of { title: title }, we can just do { title } since the key value are both the same
         id: uuidv4(), //generates a unique id
         firstName, 
         lastName, 
         dob, 
-        email
+        email,
+        password
     }
     // add the createdUser object to our existing array of user objects, DUMMY_USERS
     DUMMY_USERS.push(createdUser);
@@ -94,8 +98,34 @@ const updateUser = (req,res,next) => {
 }
 
 
+const getAllUsers = (req,res,next) => {
+    // Error handling
+    if (!DUMMY_USERS || DUMMY_USERS.length === 0) { //if we don't find any users
+        // HttpError is a class we created for error handling in our models folder and imported into this file above
+        return next(
+            new HttpError('Could not find any users.', 404)
+        );
+    }
+
+    console.log('GET request in Users');
+    res.json({users: DUMMY_USERS}); // {place} would work too, since the key and value are the same    
+}
+
+const userLogin = (req,res,next) => {
+    const { email, password } = req.body;
+    const identifiedUser = DUMMY_USERS.find(eachUser => eachUser.email === email);
+    // Error Handling
+    if (!identifiedUser || identifiedUser.password !== password){
+        throw new HttpError('Could not identify user, credentials seem to be wrong.', 401); //401 code is authentication failure
+    }
+    res.json({message: "Logged in."})
+}
+
+
 exports.getUserById = getUserById;
 exports.getUserByEmail = getUserByEmail;
-exports.createUser = createUser;
+exports.userSignUp = userSignUp;
 exports.deleteUser = deleteUser;
 exports.updateUser = updateUser;
+exports.getAllUsers = getAllUsers;
+exports.userLogin = userLogin;
