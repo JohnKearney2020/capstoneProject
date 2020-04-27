@@ -108,14 +108,16 @@ const userSignUp = async (req,res,next) => {
 //===========================================================
 //                  Delete a User by ID
 //===========================================================
-const deleteUser = (req,res,next) => {
+const deleteUser = async (req,res,next) => {
     const userId = req.params.uid;
-    // Validate that the Id passed to the route actually exists
-    if(!DUMMY_USERS.find(eachUser => eachUser.id === userId)){
-        throw new HttpError('Could not find a place with that id.', 404);
-    }    
-    DUMMY_USERS = DUMMY_USERS.filter(eachUser => eachUser.id !== userId);
-    res.status(200).json({message: 'Deleted user.'});
+    let user;
+    try {
+        user = await User.findByIdAndDelete(userId);
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not delete user.', 500);
+        return next(error);
+    }
+    res.status(200).json({message: 'Deleted user.'}); // 201 is the standard response code if something *new* was sucessfully created on the server    
 }
 
 //===========================================================
