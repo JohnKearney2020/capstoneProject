@@ -44,22 +44,24 @@ const getUserById = async (req,res,next) => {
 //===========================================================
 //                  Get a User by Email
 //===========================================================
-const getUserByEmail = (req,res,next) => {
+const getUserByEmail = async (req,res,next) => {
     const userEmail = req.params.uemail; // ':uemail' in our route
-    const user = DUMMY_USERS.find((eachUser) => {
-        return eachUser.email === userEmail;
-    })
+    let user;
+    try {
+        user = await User.find({ email: userEmail }); //this will find the place with an email equal to the email we pass to it
+    } catch (err) {
+        const error = new HttpError('Something went wrong with the call to our database.', 500);
+        return next(error);
+    }
 
     // Error handling
     if (!user) { //if we don't find a matching user
     // HttpError is a class we created for error handling in our models folder and imported into this file above
-        return next(
-            new HttpError('Could not find a user for the provided email address', 404)
-        );
+        const error = new HttpError('Could not find a user for the provided email address', 404)
+        return next(error);
     }
     
-    // console.log('GET request in Places');
-    res.json({user: user}); // {user} would work too, since the key and value are the same
+    res.json({user: user.map(user => user.toObject({ getters: true }))});
 }
 
 //===========================================================
@@ -119,7 +121,7 @@ const deleteUser = (req,res,next) => {
 //===========================================================
 //                  Update a User's Info
 //===========================================================
-const updateUser = (req,res,next) => {
+const updateUser = async (req,res,next) => {
     const { firstName, lastName, dob, email, password } = req.body;
     // validate user input
     const errors = validationResult(req);
@@ -129,18 +131,30 @@ const updateUser = (req,res,next) => {
     }
     const userId = req.params.uid;
     // Update the Object IMMUTABLY
-    const updatedUser = { ...DUMMY_USERS.find(eachUser => eachUser.id === userId)};
-    const userIndex = DUMMY_USERS.findIndex(eachUser => eachUser.id === userId);
-    // Update the old values with new values
-    updatedUser.firstName = firstName;
-    updatedUser.lastName = lastName;
-    updatedUser.dob = dob;
-    updatedUser.email = email;
-    updatedUser.password = password;
-    // replace the old place object with the new one
-    DUMMY_USERS[userIndex] = updatedUser;
 
-    res.status(200).json({user: updatedUser}); // 200 since nothing new was created
+    let user;
+    try {
+        user = await User.findById(userId);
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not update user data.', 500);
+        return next(error);
+    }
+    
+    // Update the old values with new values
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.dob = dob;
+    user.email = email;
+    user.password = password;
+
+    //save the new user data
+    try {
+        await user.save();
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not update user data', 500);
+        return next(error);
+    }
+    res.status(200).json({user: user.toObject({ getters: true })}); // 200 since nothing new was created
 }
 
 //===========================================================
