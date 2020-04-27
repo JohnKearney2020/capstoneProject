@@ -4,6 +4,7 @@ const HttpError = require('../models/httpError');
 // import { v4 as uuidv4 } from 'uuid';
 const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
+const User = require('../models/users');
 
 let DUMMY_USERS = [
     {
@@ -19,22 +20,25 @@ let DUMMY_USERS = [
 //===========================================================
 //                  Get a User by ID
 //===========================================================
-const getUserById = (req,res,next) => {
+const getUserById = async (req,res,next) => {
     const userId = req.params.uid; // ':uid' in our route
-    const user = DUMMY_USERS.find((eachUser) => {
-        return eachUser.id === userId;
-    })
+    let user;
+    try {
+        user = await User.findById(userId); //findById is a function built into mongoose
+    } catch (err) {
+        const error = new HttpError('Something went wrong with the call to our database.', 500);
+        return next(error);
+    }
 
     // Error handling
     if (!user) { //if we don't find a matching user
     // HttpError is a class we created for error handling in our models folder and imported into this file above
-        return next(
-            new HttpError('Could not find a user for the provided user id.', 404)
-        );
+        const error = new HttpError('Could not find a user for the provided user id.', 404)  
+        return next(error);
     }
-
-    // console.log('GET request in Places');
-    res.json({user: user}); // {user} would work too, since the key and value are the same
+    console.log('GET request in Users');
+    // getters: true will remove the undscore from "_id" in the auto generated id in our database
+    res.json({ user: user.toObject({ getters: true })});
 }
 
 //===========================================================
@@ -61,7 +65,7 @@ const getUserByEmail = (req,res,next) => {
 //===========================================================
 //                  Create a User / Signup
 //===========================================================
-const userSignUp = (req,res,next) => {
+const userSignUp = async (req,res,next) => {
 // remember, GET requests do not have a body, but POST requests do
 // we will use object destructuring to store data pulled from the object as constants
     const { firstName, lastName, dob, email, password } = req.body;
@@ -77,18 +81,25 @@ const userSignUp = (req,res,next) => {
     if(emailAlreadyTaken){
         throw new HttpError('Could not create user, email already taken.', 422); //422 typically used for invalid user input
     }
-    const createdUser = {
+    const createdUser = new User({
         //remember, instead of { title: title }, we can just do { title } since the key value are both the same
-        id: uuidv4(), //generates a unique id
         firstName, 
         lastName, 
         dob, 
         email,
         password
+    });
+    console.log('got to just before saving user');
+    try {
+        await createdUser.save(); // this is from Mongoose, and will save our new place in our MondoDB database
+    } catch (err) {
+        const error = new HttpError(
+            'Creating a new user failed, please try again',
+            500
+        );
+        return next(error); // needed to prevent further code execution on an error.
     }
-    // add the createdUser object to our existing array of user objects, DUMMY_USERS
-    DUMMY_USERS.push(createdUser);
-    res.status(201).json({user: createdUser});
+    res.status(201).json({user: createdUser}); // 201 is the standard response code if something *new* was sucessfully created on the server
     
 }
 
