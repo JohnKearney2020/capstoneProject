@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const HttpError = require('./models/httpError');
+const mongoose = require('mongoose');
 
 // Import Routes from Routes folder
 const usersRoutes = require('./routes/usersRoutes');
@@ -38,4 +39,15 @@ app.use((error, req, res, next) => {
     res.json({message: error.message || 'An unknown error occurred!'}); // if the error object doens't have a message property, send 'An unknown error occured!'
 })
 
-app.listen(5001);
+// the 'places' characters in the string below will name our database to 'places', we named the collection inside that database to 'places' in our
+// 'places.js' file in the 'models' folder.
+let connectURL = 'mongodb+srv://Admin:m5mLsOvp5NVkinUL@capstone-project-database-gjb48.mongodb.net/users?retryWrites=true&w=majority';
+mongoose
+    .connect(connectURL)
+    .then(() => { // if we sucessfully connect to the database, start our server
+        app.listen(5001);
+        console.log('connected to database sucessfully');
+    })
+    .catch((err) => {
+        console.log(err);
+    });
