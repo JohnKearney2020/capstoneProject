@@ -192,12 +192,19 @@ const getAllUsers = (req,res,next) => {
 //===========================================================
 //                  User Login
 //===========================================================
-const userLogin = (req,res,next) => {
+const userLogin = async (req,res,next) => {
     const { email, password } = req.body;
-    const identifiedUser = DUMMY_USERS.find(eachUser => eachUser.email === email);
-    // Error Handling
-    if (!identifiedUser || identifiedUser.password !== password){
-        throw new HttpError('Could not identify user, credentials seem to be wrong.', 401); //401 code is authentication failure
+    let existingUser;
+    try {
+        existingUser = await User.findOne({ email: email });        
+    } catch (err) {
+        const error = new HttpError('Logging in failed, try again later', 500)
+        return next(error);
+    }
+    // if a user with that email doesn't exist or the passwords don't match
+    if(!existingUser || existingUser.password !== password){
+        const error = new HttpError('Invalid credentials, could not log you in.', 401);
+        return next(error);
     }
     res.json({message: "Logged in."})
 }
