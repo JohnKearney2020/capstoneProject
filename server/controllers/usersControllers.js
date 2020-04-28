@@ -176,17 +176,16 @@ const updateUser = async (req,res,next) => {
 //===========================================================
 //                  Get all Users
 //===========================================================
-const getAllUsers = (req,res,next) => {
-    // Error handling
-    if (!DUMMY_USERS || DUMMY_USERS.length === 0) { //if we don't find any users
-        // HttpError is a class we created for error handling in our models folder and imported into this file above
-        return next(
-            new HttpError('Could not find any users.', 404)
-        );
-    }
-
-    console.log('GET request in Users');
-    res.json({users: DUMMY_USERS}); // {place} would work too, since the key and value are the same    
+const getAllUsers = async (req,res,next) => {
+    let users;
+    try {
+        users = await User.find({}, '-password'); //this will return everything except the password
+    } catch (err) {
+        const error = new HttpError('Fetching users failed, please try again later.', 500);
+        return next(error);
+    };
+    //remember, .find() returns an array, so we can't just use .toObject() right away like we do in other parts of this code
+    res.json({ users: users.map(user => user.toObject({ getters: true }))});
 }
 
 //===========================================================
