@@ -75,14 +75,26 @@ const userSignUp = async (req,res,next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         console.log(errors);
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
     }
 
-    // See if a user has already claimed that email
-    const emailAlreadyTaken = DUMMY_USERS.find(eachUser => eachUser.email === email);
-    if(emailAlreadyTaken){
-        throw new HttpError('Could not create user, email already taken.', 422); //422 typically used for invalid user input
+    //===========================================================
+    //        Check if the email address is already taken
+    //===========================================================
+    let existingUser;
+    try {
+        existingUser = await User.findOne({ email: email });        
+    } catch (err) {
+        const error = new HttpError('Signing up failed, try again later', 500);
+        return next(error);
     }
+    if(existingUser){
+        const error = new HttpError('A user with that email address already exists. Try logging in instead', 422);
+        return next(error);
+    }
+
     const createdUser = new User({
         //remember, instead of { title: title }, we can just do { title } since the key value are both the same
         firstName, 
@@ -91,6 +103,7 @@ const userSignUp = async (req,res,next) => {
         email,
         password
     });
+
     console.log('got to just before saving user');
     try {
         await createdUser.save(); // this is from Mongoose, and will save our new place in our MondoDB database
@@ -101,8 +114,7 @@ const userSignUp = async (req,res,next) => {
         );
         return next(error); // needed to prevent further code execution on an error.
     }
-    res.status(201).json({user: createdUser}); // 201 is the standard response code if something *new* was sucessfully created on the server
-    
+    res.status(201).json({user: createdUser.toObject({ getters: true })}); // 201 is the standard response code if something *new* was sucessfully created on the server
 }
 
 //===========================================================
@@ -129,7 +141,9 @@ const updateUser = async (req,res,next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         console.log(errors);
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
+        return(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
     }
     const userId = req.params.uid;
     // Update the Object IMMUTABLY
