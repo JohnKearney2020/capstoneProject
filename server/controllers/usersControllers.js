@@ -5,6 +5,7 @@ const HttpError = require('../models/httpError');
 const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
 const User = require('../models/users');
+const mongoose = require('mongoose');
 
 let DUMMY_USERS = [
     {
@@ -101,7 +102,8 @@ const userSignUp = async (req,res,next) => {
         lastName, 
         dob, 
         email,
-        password
+        password,
+        products: [] // we handle filling this in during product creation, as opposed to user creation here
     });
 
     console.log('got to just before saving user');

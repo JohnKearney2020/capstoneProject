@@ -1,0 +1,32 @@
+{
+	"firstName": "Brittany",
+	"lastName": "Stuart",
+	"dob": "11/3/1993",
+	"email": "brittanystuart33@gmail.com",
+	"password": "testPass456"
+}
+
+{
+	"firstName": "John",
+	"lastName": "Kearney",
+	"dob": "12/27/1984",
+	"email": "johnkearneydev@gmail.com",
+	"password": "testPass123"
+}
+
+{
+	"firstName": "John",
+	"lastName": "Smith",
+	"dob": "1/1/1999",
+	"email": "jsmith@gmail.com",
+	"password": "testPass789"
+}
+
+{
+	"firstName": "Francise",
+	"lastName": "Malone",
+	"dob": "3/4/1970",
+	"email": "fmalone@gmail.com",
+	"password": "testPass111112"
+}
+
