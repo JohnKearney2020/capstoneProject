@@ -5,6 +5,10 @@ const Product = require('../models/product');
 const User = require('../models/users');
 const mongoose = require('mongoose');
 
+//=================================================================================================================================
+//                                                            Create a Product
+//=================================================================================================================================
+// this will also associate the product id with the user that created it
 const createProduct = async(req,res,next) => {
     const { productName, productDescription, cost, creator } = req.body;
     // validate user input
@@ -63,13 +67,14 @@ const createProduct = async(req,res,next) => {
         sess.startTransaction(); // start a transaction next
         console.log('transaction started');
         // need to provide our current session as an argument for our .save()
-        try {
-            await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
-        } catch (err) {
-            console.log(err);
-        }
         await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
+        // try {
+        //     await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
+        // } catch (err) {
+        //     console.log(err);
+        // }
         console.log('product saved');
+
         // --------------------------------------------------
         //    Add the place Id to the corresponding User
         // --------------------------------------------------
@@ -95,64 +100,53 @@ const createProduct = async(req,res,next) => {
 
     res.status(201).json({product: createdProduct}); // 201 is the standard response code if something *new* was sucessfully created on the server
     
+}
 
 
+//=================================================================================
+//                                 Delete a Product
+//=================================================================================
+// this will also delete the product id from the user that created it
+const deleteProduct = async (req,res,next) => {
+    const productId = req.params.pid;
+    let product;
+    // find a product with a matching id
+    try {
+        // populate lets us refer to a document stored in a different collection and work with the data in that document
+        // a link between the two collections must be established for populate() to work, which we did for linking users to products already
+        product = await Product.findById(productId).populate('creator');
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not delete product, try again.', 500);
+        return next(error);
+    }
 
+    // if we didn't find a matching place
+    if(!product) {
+        const error = new HttpError('Could not find a product with that id.', 404);
+        return next(error);
+    }
+    
 
-    // res.status(201).json({product: createdProduct.toObject({ getters: true })}); // 201 is the standard response code if something *new* was sucessfully created on the server
+    try {
+        // delete the matching product if it exists
+        const sess = await mongoose.startSession(); // start a session first
+        sess.startTransaction(); // start a transaction next
+        // remove the product
+        await product.remove({ session: sess });
+        // ***We can do what we do below b/c populate gave us the full user object linked to this product***
+        // below, 'products' is our collection name. This is actually manipulating data from our 'users' collection though
+        product.creator.products.pull(product); // pull will automatically remove the product id from the corresponding user
+        // save the updated user
+        await product.creator.save({ session: sess });
+        await sess.commitTransaction();
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not delete product.', 500);
+        return next(error);
+    }
+    
+    res.status(200).json({message: 'Deleted product.'}); // 201 is the standard response code if something *new* was sucessfully created on the server
 }
 
 exports.createProduct = createProduct;
+exports.deleteProduct = deleteProduct;
 
-//===========================================================
-//                  Create a User / Signup
-//===========================================================
-// const userSignUp = async (req,res,next) => {
-//     // remember, GET requests do not have a body, but POST requests do
-//     // we will use object destructuring to store data pulled from the object as constants
-//         const { firstName, lastName, dob, email, password } = req.body;
-//         // validate user input
-//         const errors = validationResult(req);
-//         if(!errors.isEmpty()){
-//             console.log(errors);
-//             return next(
-//                 new HttpError('Invalid inputs passed, please check your data.', 422)
-//             )
-//         }
-    
-//         //===========================================================
-//         //        Check if the email address is already taken
-//         //===========================================================
-//         let existingUser;
-//         try {
-//             existingUser = await User.findOne({ email: email });        
-//         } catch (err) {
-//             const error = new HttpError('Signing up failed, try again later', 500);
-//             return next(error);
-//         }
-//         if(existingUser){
-//             const error = new HttpError('A user with that email address already exists. Try logging in instead', 422);
-//             return next(error);
-//         }
-    
-//         const createdUser = new User({
-//             //remember, instead of { title: title }, we can just do { title } since the key value are both the same
-//             firstName, 
-//             lastName, 
-//             dob, 
-//             email,
-//             password
-//         });
-    
-//         console.log('got to just before saving user');
-//         try {
-//             await createdUser.save(); // this is from Mongoose, and will save our new place in our MondoDB database
-//         } catch (err) {
-//             const error = new HttpError(
-//                 'Creating a new user failed, please try again',
-//                 500
-//             );
-//             return next(error); // needed to prevent further code execution on an error.
-//         }
-//         res.status(201).json({user: createdUser.toObject({ getters: true })}); // 201 is the standard response code if something *new* was sucessfully created on the server
-//     }
