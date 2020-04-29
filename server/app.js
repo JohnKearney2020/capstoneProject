@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 // Import Routes from Routes folder
 const usersRoutes = require('./routes/usersRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 // body-parser middleware
 // middleware is parsed from top to bottom in this file, so we want to parse the body here before we parse any routes
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 
 app.use('/api/users/', usersRoutes);
+app.use('/api/products/', productRoutes);
 
 //==================
 //  Error Handling
@@ -41,7 +43,7 @@ app.use((error, req, res, next) => {
 
 // the 'places' characters in the string below will name our database to 'places', we named the collection inside that database to 'places' in our
 // 'places.js' file in the 'models' folder.
-let connectURL = 'mongodb+srv://Admin:m5mLsOvp5NVkinUL@capstone-project-database-gjb48.mongodb.net/users?retryWrites=true&w=majority';
+let connectURL = 'mongodb+srv://Admin:m5mLsOvp5NVkinUL@capstone-project-database-gjb48.mongodb.net/store?retryWrites=true&w=majority';
 mongoose
     .connect(connectURL)
     .then(() => { // if we sucessfully connect to the database, start our server

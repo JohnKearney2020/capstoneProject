@@ -5,6 +5,7 @@ const HttpError = require('../models/httpError');
 const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
 const User = require('../models/users');
+const mongoose = require('mongoose');
 
 let DUMMY_USERS = [
     {
@@ -101,7 +102,8 @@ const userSignUp = async (req,res,next) => {
         lastName, 
         dob, 
         email,
-        password
+        password,
+        products: [] // we handle filling this in during product creation, as opposed to user creation here
     });
 
     console.log('got to just before saving user');
@@ -176,28 +178,34 @@ const updateUser = async (req,res,next) => {
 //===========================================================
 //                  Get all Users
 //===========================================================
-const getAllUsers = (req,res,next) => {
-    // Error handling
-    if (!DUMMY_USERS || DUMMY_USERS.length === 0) { //if we don't find any users
-        // HttpError is a class we created for error handling in our models folder and imported into this file above
-        return next(
-            new HttpError('Could not find any users.', 404)
-        );
-    }
-
-    console.log('GET request in Users');
-    res.json({users: DUMMY_USERS}); // {place} would work too, since the key and value are the same    
+const getAllUsers = async (req,res,next) => {
+    let users;
+    try {
+        users = await User.find({}, '-password'); //this will return everything except the password
+    } catch (err) {
+        const error = new HttpError('Fetching users failed, please try again later.', 500);
+        return next(error);
+    };
+    //remember, .find() returns an array, so we can't just use .toObject() right away like we do in other parts of this code
+    res.json({ users: users.map(user => user.toObject({ getters: true }))});
 }
 
 //===========================================================
 //                  User Login
 //===========================================================
-const userLogin = (req,res,next) => {
+const userLogin = async (req,res,next) => {
     const { email, password } = req.body;
-    const identifiedUser = DUMMY_USERS.find(eachUser => eachUser.email === email);
-    // Error Handling
-    if (!identifiedUser || identifiedUser.password !== password){
-        throw new HttpError('Could not identify user, credentials seem to be wrong.', 401); //401 code is authentication failure
+    let existingUser;
+    try {
+        existingUser = await User.findOne({ email: email });        
+    } catch (err) {
+        const error = new HttpError('Logging in failed, try again later', 500)
+        return next(error);
+    }
+    // if a user with that email doesn't exist or the passwords don't match
+    if(!existingUser || existingUser.password !== password){
+        const error = new HttpError('Invalid credentials, could not log you in.', 401);
+        return next(error);
     }
     res.json({message: "Logged in."})
 }
