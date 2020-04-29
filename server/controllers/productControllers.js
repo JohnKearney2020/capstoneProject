@@ -147,6 +147,32 @@ const deleteProduct = async (req,res,next) => {
     res.status(200).json({message: 'Deleted product.'}); // 201 is the standard response code if something *new* was sucessfully created on the server
 }
 
+//=================================================================================================================================
+//                                                          Get Products by UserId
+//=================================================================================================================================
+const getProductsByUserId = async (req,res,next) => {
+    const userId = req.params.uid;
+    // let places;
+    userWithProducts = await User.findById(userId).populate('products'); //here, 'places' refers to the array of places attached to each user in our db
+    try {
+        products = await Product.find({ creator: userId }) //this will find the place with a creator id equal to the user id we pass to it
+        //it will return an array
+    } catch (err) {
+        const error = new HttpError('Something went wrong with the call to our database, try again later', 500);
+        return next(error);
+    }
+    // Error handling
+    if (!userWithProducts || userWithProducts.products.length === 0) { //if we don't find a matching place
+        // HttpError is a class we created for error handling in our models folder and imported into this file above
+        const error = new HttpError('Could not find any products for the provided creator id.', 404)
+        return next(error);
+    }
+
+    console.log('GET request in Places');
+    // ***NOTE: find() returns an array, so we can't use .toObject() like we did with .findById(), need to use .map() first ***
+    res.json({places: userWithProducts.products.map(product => product.toObject({ getters: true }))});
+}
 exports.createProduct = createProduct;
 exports.deleteProduct = deleteProduct;
+exports.getProductsByUserId = getProductsByUserId;
 

@@ -48,7 +48,7 @@ mongoose
     .connect(connectURL)
     .then(() => { // if we sucessfully connect to the database, start our server
         app.listen(5001);
-        console.log('connected to database sucessfully');
+        console.log('connected to database sucessfully and listening on PORT: 5001');
     })
     .catch((err) => {
         console.log(err);
