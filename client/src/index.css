@@ -1,0 +1,173 @@
+.product{
+    border: 1px solid #eee;
+    margin: 1rem 0;
+    padding: 1rem;
+}
+@media (min-width: 800px){
+    .product{
+        margin: 0 1rem;
+        width: 33.3333%;
+    }
+}
+.product-title{
+    font-size: 16px;
+}
+.product-price{
+    margin-bottom: 1rem;
+}
+.product-buy-button{
+    display:inline-block;
+    margin: 0 0 1rem 0;
+    padding: 0.85em 1em;
+    border: 0;
+    outline: 0;
+    border-radius: 100em;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    background-color: #61dafb;
+    color: #fff;
+    cursor: pointer;
+    transition-property: background-color, color;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+    -webkit-appearance: none;
+}
+.product-buy-button:hover, .product-buy-button:focus{
+    background-color: #47b8d7;
+}
+/* ============================================================ */
+                    /*      APP.js styling     */
+/* ============================================================ */
+.app-logo{
+    animation: app-logo-spin infinite 20s linear;
+    height: 32px;
+}
+.app-header{
+    background-color: #282c34;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+.app-header-name{
+    font-size: 16px;
+}
+.app-shop{
+    padding:1rem 1rem 3rem;
+
+}
+.app-products{
+    margin: 3rem auto 3.5rem;
+    max-width: 800px;
+    text-align: center;
+}
+@media (min-width: 800px){
+    .app-products{
+        display: flex;
+        justify-content: center;
+    }
+}
+@keyframes app-logo-spin {
+    from {
+        transform: rotate(0deg)
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+/* ============================================================ */
+                    /*      Cart.js styling     */
+/* ============================================================ */
+.cart{
+    border-top: 1px solid #eee;
+    margin: 0 auto;
+    max-width: 800px;
+    padding-top: 2rem;
+    text-align:center;
+
+}
+.total-cost{
+    font-weight: 700;
+    padding: 2rem;
+}
+/* ============================================================ */
+                    /*      CartItem.js styling     */
+/* ============================================================ */
+.cart-item{
+    border-bottom: 1px solid #eee;
+display: flex;
+justify-content: space-between;
+padding: 1rem;
+text-align: left;
+}
+.cart-item-details {
+display: flex;
+width: 180px;
+}
+.cart-item-details div {
+flex: 1 1 50%;
+}
+.cart-item-quantity {
+padding: 0 1rem;
+
+}
+/* ============================================================ */
+                    /*      CheckoutForm.js styling     */
+/* ============================================================ */
+.checkout-form {
+        border-top: 1px solid #eee;
+        margin: 0 auto;
+        max-width: 800px;
+        padding-top: 2rem;
+        text-align: center;
+    }
+.form-complete {
+        color: #7fdc45;
+        font-weight: 700;
+        text-align: center;
+    }
+.checkout-form-button {
+        display: inline-block;
+        margin: 0 0 1rem 0;
+        padding: 0.85em 1em;
+        border: 0;
+        outline: 0;
+        border-radius: 100em;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1;
+        text-align: center;
+        background-color: #7fdc45;
+        color: #fff;
+        cursor: pointer;
+        transition-property: background-color, color;
+        transition-duration: 0.25s;
+        transition-timing-function: ease-out;
+        -webkit-appearance: none;
+    }
+    .checkout-form-button:hover,
+    .checkout-form-button:focus {
+        background-color: #68b637;
+    }
+    .checkout-form-button:disabled {
+        background-color: #ccc;
+    }
+    .checkout-form-error {
+        color: #dc4545;
+    }
+.StripeElement {
+    display: block;
+    margin: 0.5rem auto 1.5rem;
+    max-width: 500px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    outline: 0;
+    background: white;
+}
