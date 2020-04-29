@@ -11,11 +11,11 @@ function CheckoutForm({stripe, totalCost}) {
 
         try {
             let { token } = await stripe.createToken({ name:'Name' });
-            let response = await fetch('./netlify/functions/charge', {
+            let response = await fetch('/.netlify/functions/charge', {
                 method: 'POST',
                 body: JSON.stringify({
                     amount: totalCost * 100,
-                    toke: token.id,
+                    token: token.id,
                 }),
             });
             if(response.ok) {
