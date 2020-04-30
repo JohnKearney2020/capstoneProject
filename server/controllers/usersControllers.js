@@ -7,17 +7,6 @@ const { validationResult } = require('express-validator');
 const User = require('../models/users');
 const mongoose = require('mongoose');
 
-let DUMMY_USERS = [
-    {
-        id: 'u1',
-        firstName: 'John',
-        lastName: 'Kearney',
-        dob: '12/27/1984',
-        email: 'jk242903@gmail.com',
-        password: 'testPass123'
-    }
-];
-
 //===========================================================
 //                  Get a User by ID
 //===========================================================
