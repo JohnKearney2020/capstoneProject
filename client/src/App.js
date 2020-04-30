@@ -1,76 +1,60 @@
-import React, { Component } from 'react'
-import { Container } from 'react-bootstrap';
-import './App.css'
-import Subtotal from './components/Subtotal/Subtotal'
-import Savings from './components/Savings/Savings'
-import Taxes from './components/Taxes/Taxes'
-import TotalCost from './components/TotalCost/TotalCost';
-import ItemDetails from './components/ItemDetails/ItemDetails'
-import PromoCode from './components/PromoCode/PromoCode'
-import { connect } from 'react-redux'
-import { handleChange } from "./actions/promoCodeAction";
+import React, { useState } from 'react'
+import { Elements, StripeProvider } from 'react-stripe-elements'
+import items from './api/api-items'
+import Product from './components/Product/Product'
+import Cart from './components/Cart/Cart'
+import CheckoutForm from './components/CheckoutForm/CheckoutForm'
+import './index.css'
+import logo from './logo.svg'
 
-export class App extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state ={
-      total : 200,
-      savings: -3.85,
-      taxes : 0,
-      totalCost : 0,
-      disablePromoButton : false,
-    }
-  }
 
-  componentDidMount = () => {
-    this.setState({
-      taxes : (this.state.total + this.state.savings) * 0.0625
-    },
-    function(){
-      this.setState({
-        totalCost : this.state.total + this.state.savings + this.state.taxes
-      })
-    })
-  }
-  
-  giveDiscountHandler = () => {
-    if(this.props.promoCode === 'DISCOUNT') {
-      this.setState({
-        totalCost : this.state.totalCost * 0.9
-      },
+export default function App () {
+    const [itemsInCart, setItemsInCart] = useState([]);
 
-      function(){
-        this.setState({
-          disablePromoButton : true
+    const handleAddToCartClick = id => {
+        setItemsInCart(itemsInCart => {
+            const itemInCart = itemsInCart.find(item => item.id === id);
+            //if item found in cart then update the quantity
+            if(itemInCart){
+                return itemsInCart.map(item => {
+                    if(item.id !==id) return item;
+                    return {...itemInCart, quantity: item.quantity + 1};
+                })
+            }
+            //else, add new itme into cart
+            const item = items.find(item => item.id === id);
+            return [...itemsInCart, {...item, quantity: 1}]
         });
-      })
-    }
-  }
-  
-  render() {
+    };
+    const totalCost = itemsInCart.reduce(
+        (acc,item) => acc + item.price * item.quantity, 0
+    );
+    
+    
     return (
-      <div className="container">
-        <Container className='purchase-card'>
-          <Subtotal price={this.state.total.toFixed(2)} />
-          <Savings  price={this.state.savings}/>
-          <Taxes taxes={this.state.taxes.toFixed(2)} />
-          <hr />
-          <TotalCost price={this.state.totalCost.toFixed(2)}/>
-          <ItemDetails price={this.state.totalCost.toFixed(2)} />
-          <hr />
-          <PromoCode 
-          giveDiscount={()=> this.giveDiscountHandler()} 
-          isDisabled ={this.state.disablePromoButton}
-          />
-        </Container>
-      </div>
-    )
-  }
+        <div className="app">
+            <header className="app-header">
+                <img src={logo} className="app-logo" alt="logo" />
+                <h1 className="app-header-name">Jesse's Shop</h1>
+            </header>
+            <main className="app-shop">
+                <div className="app-products">
+                    {items.map(item => (
+
+                        <Product key={item.title} title={item.title} price={item.price} onAddToCart={() => handleAddToCartClick(item.id)} />
+
+                    ))}
+                </div>
+                <Cart itemsInCart={itemsInCart} totalCost={totalCost}/>
+                {itemsInCart.length > 0 && (
+                    <StripeProvider apiKey="pk_test_YxnZKhFG2YcQdDL6B5KZwmey00rQAe3YsL">
+                        <Elements>
+                            <CheckoutForm totalCost={totalCost} />
+                        </Elements>
+                    </StripeProvider>
+                )}
+            </main>
+        </div>
+    );
 }
-const mapStateToProps = state => ({
-  promoCode : state.promoCode.value
-})
-
-export default connect(mapStateToProps, {handleChange})(App);
-
