@@ -25,5 +25,16 @@ router.post('/create',
     ],
     productControllers.createProduct
 );
-// router.get('/create', productControllers.createProduct);
+
+//===========================================================
+//                  Delete a Product by ID
+//===========================================================
+//typically the identifying data is encoded into the URL, and the data with which you work is encoded into the request body, as below
+router.delete('/delete/:pid', productControllers.deleteProduct);
+
+//===========================================================
+//                  Get Products by User ID
+//===========================================================
+router.get('/getbyuserid/:uid', productControllers.getProductsByUserId)
+
 module.exports = router; // we export this to our app.js file
