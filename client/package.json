@@ -9,14 +9,15 @@
     "http-proxy-middleware": "^1.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-stripe-elements": "^6.1.2"
   },
   "scripts": {
-    "start" : "run-p start:**",
+    "start": "run-p start:**",
     "start:app": "react-scripts start",
     "start:lambda": "netlify-lambda serve src/lambda",
-    "build" : "run-p build:**",
+    "build": "run-p build:**",
     "build:app": "react-scripts build",
     "build:lambda": "netlify-lambda build src/lambda",
     "test": "react-scripts test",
