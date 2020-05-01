@@ -18,7 +18,7 @@ const userSchema = new Schema({
     // we need to set up something similar in our 'product.js' model file
     // Since one user can have multiple products, we need to make this an array
     products: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Product' }],
-    wishlist: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Product' }]
+    wishlist: { type: Array, required: true }
 })
 
 userSchema.plugin(uniqueValidator); //how we use mongoose-unique-validator

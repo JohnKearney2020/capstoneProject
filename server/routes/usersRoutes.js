@@ -91,4 +91,16 @@ router.post('/wishlist/:uid',
     usersControllers.addProductToWishList
 )
 
+// remember, the root of this route is '/api/users/'
+//===========================================================
+//                  Add a Product to User Wishlist
+//===========================================================
+router.delete('/wishlist/:uid',
+    check('productId')
+        .not()
+        .isEmpty(),
+    usersControllers.deleteWishlistItem
+)
+
+
 module.exports = router; // we export this to our app.js file
