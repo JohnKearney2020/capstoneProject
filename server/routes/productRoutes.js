@@ -37,12 +37,7 @@ router.post('/create',
         check('shipReadyTime')
             .not()
             .isEmpty(),
-        check('dropDownTitle')
-            .not()
-            .isEmpty(),
-        check('dropDownOptions')
-            .not()
-            .isEmpty(),
+        //dropDownTitle and dropDownOptions can be left blank if the use doesn't want any options
         check('category')
             .not()
             .isEmpty(),
@@ -63,5 +58,44 @@ router.delete('/delete/:pid', productControllers.deleteProduct);
 //                  Get Products by User ID
 //===========================================================
 router.get('/getbyuserid/:uid', productControllers.getProductsByUserId)
+
+//===========================================================
+//                  Update Product Information
+//===========================================================
+router.patch('/id/:pid',
+    [
+        check('productName')
+            .not()
+            .isEmpty(),
+        check('title')
+            .not()
+            .isEmpty(),
+        check('productDescription').isLength({min: 10}),
+        check('cost')
+            .not()
+            .isEmpty(),
+        check('shippingCost')
+            .not()
+            .isEmpty(),
+        check('freeShipEligible')
+            .not()
+            .isEmpty(),
+        check('shippingFrom')
+            .not()
+            .isEmpty(),
+        check('shipTimeEst')
+            .not()
+            .isEmpty(),
+        check('shipReadyTime')
+            .not()
+            .isEmpty(),
+        //dropDownTitle and dropDownOptions can be left blank if the use doesn't want any options
+        check('category')
+            .not()
+            .isEmpty()
+    ],
+    productControllers.updateProduct
+);
+
 
 module.exports = router; // we export this to our app.js file

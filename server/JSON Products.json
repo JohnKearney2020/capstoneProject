@@ -11,8 +11,8 @@
 	"shippingFrom": "Oklahoma, United States",
 	"shipTimeEst": "2 - 6 Days",
 	"shipReadyTime": "1-2 Business Days",
-	"dropDownTitle": "Select a Color",
-	"dropDownOptions": ["Snakeskin Black", "Snakeskin White", "Snakeskin Blue"],
+	"dropDownTitle": "",
+	"dropDownOptions": [],
 	"category": "Clothing",
 	"creator": "5ea8c59c9a653850cc0d2f37"
 }

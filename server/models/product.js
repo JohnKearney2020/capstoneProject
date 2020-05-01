@@ -15,8 +15,8 @@ const productSchema = new Schema({
     shippingFrom: { type: String, required: true },
     shipTimeEst: { type: String, required: true },
     shipReadyTime: { type: String, required: true },
-    dropDownTitle: { type: String, required: true },
-    dropDownOptions: { type: Array, required: true },
+    dropDownTitle: { type: String, required: false },
+    dropDownOptions: { type: Array, required: false },
     category: { type: String, required: true },
     //===========================================================================================
     //                              Linking Products and Users
