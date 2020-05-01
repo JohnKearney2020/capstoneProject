@@ -10,7 +10,24 @@ const mongoose = require('mongoose');
 //=================================================================================================================================
 // this will also associate the product id with the user that created it
 const createProduct = async(req,res,next) => {
-    const { productName, productDescription, cost, creator } = req.body;
+    // const { productName, productDescription, cost, creator } = req.body;
+    const { 
+        productName, 
+        title, 
+        picture, 
+        productDescription, 
+        cost, 
+        shippingCost, 
+        freeShipEligible, 
+        shippingFrom, 
+        shipTimeEst,
+        shipReadyTime,
+        dropDownTitle,
+        dropDownOptions,
+        category,
+        creator
+    } = req.body;
+
     // validate user input
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -21,11 +38,19 @@ const createProduct = async(req,res,next) => {
     }
 
     const createdProduct = new Product({
-        //remember, instead of { title: title }, we can just do { title } since the key value are both the same
         productName, 
+        title, 
+        picture, 
         productDescription, 
-        cost,
-        image:'https://i.imgur.com/Qx6AMQQ.jpg',
+        cost, 
+        shippingCost, 
+        freeShipEligible, 
+        shippingFrom, 
+        shipTimeEst,
+        shipReadyTime,
+        dropDownTitle,
+        dropDownOptions,
+        category,
         creator
     });
 
@@ -67,12 +92,12 @@ const createProduct = async(req,res,next) => {
         sess.startTransaction(); // start a transaction next
         console.log('transaction started');
         // need to provide our current session as an argument for our .save()
-        await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
-        // try {
-        //     await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        // await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
+        try {
+            await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
+        } catch (err) {
+            console.log(err);
+        }
         console.log('product saved');
 
         // --------------------------------------------------
@@ -97,8 +122,8 @@ const createProduct = async(req,res,next) => {
         );
         return next(error); // needed to prevent further code execution on an error.
     }
-
-    res.status(201).json({product: createdProduct}); // 201 is the standard response code if something *new* was sucessfully created on the server
+    // res.status(201).json({product: createdProduct}); 
+    res.status(201).json({product: createdProduct.toObject({ getters: true })}); // 201 is the standard response code if something *new* was sucessfully created on the server
     
 }
 
@@ -147,6 +172,7 @@ const deleteProduct = async (req,res,next) => {
     res.status(200).json({message: 'Deleted product.'}); // 201 is the standard response code if something *new* was sucessfully created on the server
 }
 
+
 //=================================================================================================================================
 //                                                          Get Products by UserId
 //=================================================================================================================================
@@ -172,7 +198,74 @@ const getProductsByUserId = async (req,res,next) => {
     // ***NOTE: find() returns an array, so we can't use .toObject() like we did with .findById(), need to use .map() first ***
     res.json({places: userWithProducts.products.map(product => product.toObject({ getters: true }))});
 }
+
+//===========================================================
+//                  Update a Product's Info
+//===========================================================
+const updateProduct = async (req,res,next) => {
+    const { 
+        productName, 
+        title, 
+        picture, 
+        productDescription,
+        cost, 
+        shippingCost, 
+        freeShipEligible, 
+        shippingFrom, 
+        shipTimeEst, 
+        shipReadyTime,
+        dropDownTitle,
+        dropDownOptions,
+        category,
+    } = req.body;
+
+    // validate user input
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors);
+        return(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
+    }
+    const productId = req.params.pid;
+    // Update the Object IMMUTABLY
+
+    let product;
+    try {
+        product = await Product.findById(productId);
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not update product data, try again later.', 500);
+        return next(error);
+    }
+    
+    // Update the old values with new values
+    product.productName = productName;
+    product.title = title;
+    product.picture = picture;
+    product.productDescription = productDescription;
+    product.cost = cost;
+    product.shippingCost = shippingCost;
+    product.freeShipEligible = freeShipEligible;
+    product.shippingFrom = shippingFrom;
+    product.shipTimeEst = shipTimeEst;
+    product.shipReadyTime = shipReadyTime;
+    product.dropDownTitle = dropDownTitle;
+    product.dropDownOptions = dropDownOptions;
+    product.category = category;
+
+    //save the new user data
+    try {
+        await product.save();
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not update product data', 500);
+        console.log(err);
+        return next(error);
+    }
+    res.status(200).json({product: product.toObject({ getters: true })}); // 200 since nothing new was created
+}
+
 exports.createProduct = createProduct;
 exports.deleteProduct = deleteProduct;
 exports.getProductsByUserId = getProductsByUserId;
+exports.updateProduct = updateProduct;
 

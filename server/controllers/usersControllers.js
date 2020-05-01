@@ -200,6 +200,131 @@ const userLogin = async (req,res,next) => {
 }
 
 
+//=================================================================================================================================
+//                                                  Add a Product to a User's Wishlist
+//=================================================================================================================================
+const addProductToWishList = async(req,res,next) => {
+    const { productId } = req.body;
+    let userId = req.params.uid;
+    
+    // validate user input
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors);
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
+    }
+    //==========================================
+    //      Update the user wishlist info
+    //==========================================
+    // check if the user ID provided exists or not
+    let user;
+    try {
+        user = await User.findById(userId); // see if the user id for our product is a real user id
+    } catch (err) {
+        console.log(user);
+        const error = new HttpError('Adding product to wishlist failed, please try again.', 500);
+        return next(error);
+    }
+    // if the user does not exist
+    if(!user) {
+        const error = new HttpError('Could not find user for provided id', 404);
+        return next(error);
+    }
+    console.log(user);
+
+    try {
+        const sess = await mongoose.startSession(); // start a session first
+        console.log('session started');
+        sess.startTransaction(); // start a transaction next
+        console.log('transaction started');
+        // ---------------------------------------------------------------
+        //    Add the Product Id to the corresponding User's wishlist
+        // ---------------------------------------------------------------
+        // *Very Important* below, 'wishlist' refers to our collection called 'wishlist', user refers to the variable we defined above
+        user.wishlist.push(productId); // this updates the user with this product id 
+        // this push is different than standard js push(), it's a mongoose method that will link the user and product
+        console.log('user updated');
+        //now we need to save our updated user
+        await user.save({ session: sess });
+        console.log('user saved');
+        // lastly, if we successfully created and saved a product, updated and saved the user, we need to commit our Transaction
+        await sess.commitTransaction(); // this is the point where changes are actually saved to our database. Had any of the above tasks failed
+        // the data would have been rolled back automatically by MongoDB.
+        console.log('transaction commited');
+
+    } catch (err) {
+        const error = new HttpError(
+            'Adding the product to the wishlist failed, please try again',
+            500
+        );
+        return next(error); // needed to prevent further code execution on an error.
+    }
+    res.status(201).json({user: user}); // 201 is the standard response code if something *new* was sucessfully created on the server
+}
+
+//=================================================================================
+//                             Delete an Item from a Wishlist
+//=================================================================================
+// this will also delete the product id from the user that created it
+const deleteWishlistItem = async (req,res,next) => {
+    const userId = req.params.uid;
+    const { productId } = req.body;
+    
+    // validate user input
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors);
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
+    }
+
+    // check if the user ID provided exists or not
+    let user;
+    try {
+        user = await User.findById(userId); // see if the user id for our product is a real user id
+    } catch (err) {
+        const error = new HttpError('Remove wishlist item failed, please try again.', 500);
+        return next(error);
+    }
+    // if the user does not exist
+    if(!user) {
+        const error = new HttpError('Could not find user for provided id', 404);
+        return next(error);
+    }
+    // console.log(user);
+    
+    // at this point we've found the user with the user id provided
+    try {
+        // delete the matching product if it exists
+        const sess = await mongoose.startSession(); // start a session first
+        sess.startTransaction(); // start a transaction next
+        // remove the product
+        await user.wishlist.pull(productId); //remove the product id from the wishlist
+        // save the updated user
+        console.log('ProductId', productId);
+        console.log(user);
+        console.log('user wishlist updated, but not yet saved.');
+        // try {
+        //     await product.creator.save({ session: sess });
+        // } catch (err) {
+        //     console.log(err);
+        // }
+        await user.save({ session: sess });
+        console.log('user wishlist saved.');
+        await sess.commitTransaction();
+        console.log('transaction commited');
+    } catch (err) {
+        const error = new HttpError('Something went wrong, could not delete product.', 500);
+        return next(error);
+    }
+    
+    res.status(200).json({message: 'Removed wishlish item.'}); // 201 is the standard response code if something *new* was sucessfully created on the server
+}
+
+
 exports.getUserById = getUserById;
 exports.getUserByEmail = getUserByEmail;
 exports.userSignUp = userSignUp;
@@ -207,3 +332,5 @@ exports.deleteUser = deleteUser;
 exports.updateUser = updateUser;
 exports.getAllUsers = getAllUsers;
 exports.userLogin = userLogin;
+exports.addProductToWishList = addProductToWishList;
+exports.deleteWishlistItem = deleteWishlistItem;
