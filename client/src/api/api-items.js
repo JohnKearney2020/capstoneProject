@@ -1,21 +1,30 @@
 //This is where we would fetch our API data for the items
-export default[
+export default{
+    products : [
     {
-        id : 1,
-        title: "Banana",
+        _id : '1',
+        image : "../../../assets/fonts/banana.jpg",
+        title: 'Banana',
         price: 50,
         category: "Essentials",
+        rating : 4.5,
+        numOfRev : 5
     },
     {
-        id: 2,
+        _id: '2',
         title: "Peaches",
         price: 80,
         category: "Essentials",
+        rating: 4.5,
+        numOfRev : 5
     },
     {
-        id: 3,
+        _id: '3',
         title: "The Best Graphics Card in the Universe",
         price: 1000000,
         category: "Essentials",
+        rating : 4.5,
+        numOfRev : 5
+    },
+        ]
     }
-]
