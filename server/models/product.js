@@ -4,9 +4,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
+
     productName: { type: String, required: true },
-    productDescription: { type: String, required: true },
-    cost: { type: Number, required: true },
+    title: { type: String, required: true },
+    picture: { type: String, required: false }, //maybe the user wants to get a good picture and upload later
+    productDescription: { type: String, required: true }, 
+    cost: { type: Number, required: true }, 
+    shippingCost: { type: Number, required: true },  
+    freeShipEligible: { type: Boolean, required: true },
+    shippingFrom: { type: String, required: true },
+    shipTimeEst: { type: String, required: true },
+    shipReadyTime: { type: String, required: true },
+    dropDownTitle: { type: String, required: true },
+    dropDownOptions: { type: Array, required: true },
+    category: { type: String, required: true },
     //===========================================================================================
     //                              Linking Products and Users
     //===========================================================================================
@@ -18,13 +29,6 @@ const productSchema = new Schema({
     creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 })
 
-// productSchema.plugin(uniqueValidator); //how we use mongoose-unique-validator
 
 module.exports = mongoose.model('Product', productSchema); // model() will return a constructor function later
 // remember, this will be the name of our collection, and will be automatically renamed to 'places'
-
-// firstName, 
-// lastName, 
-// dob, 
-// email,
-// password

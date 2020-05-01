@@ -1,27 +1,69 @@
+
+
 {
 	"productName": "Gold Earrings",
-	"productDescription": "14k Gold - hand crafted and fabulous!",
+	"title": "14k Gold - hand crafted and fabulous!",
+	"picture": "https://ae01.alicdn.com/kf/Ha8da5a08197c4ab78c635e4b5cab21ed8/Bangrui-New-Design-big-Hoop-Earrings-22K-Gold-Color-Twisted-Earings-For-Women-Girls-Romantic-punk.jpg",
+	"productDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sem integer vitae justo eget magna fermentum iaculis eu non. Pellentesque elit eget gravida cum. Praesent tristique magna sit amet purus gravida quis.",
 	"cost": 49.99,
-	"creator": "5ea8991b2080bf3b304c20a3"
-}
-
-{
-	"productName": "Rhinestone Cowboy Hat",
-	"productDescription": "Worn by Joe Exotic himself!",
-	"cost": 199.99,
-	"creator": "5ea8991b2080bf3b304c20a3"
-}
-
-{
-	"productName": "Healing Crystals",
-	"productDescription": "Feel the sweet healing waves imminating from these bad boys!",
-	"cost": 21.99,
+	"shippingCost": 3.99,
+	"freeShipEligible": "true",
+	"shippingFrom": "Oklahoma, United States",
+	"shipTimeEst": "2 - 6 Days",
+	"shipReadyTime": "1-2 Business Days",
+	"dropDownTitle": "Select a Color",
+	"dropDownOptions": ["Snakeskin Black", "Snakeskin White", "Snakeskin Blue"],
+	"category": "Clothing",
 	"creator": "5ea8c59c9a653850cc0d2f37"
 }
 
 {
-	"productName": "Cat mouse toy",
-	"productDescription": "Your cat will love chasing this!",
-	"cost": 5.99,
+	"productName": "Rhinestone Cowboy Hat",
+	"title": "Worn by Joe Exotic himself!",
+	"picture": "https://i.imgur.com/LEycFSH.jpg",
+	"productDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sem integer vitae justo eget magna fermentum iaculis eu non. Pellentesque elit eget gravida cum. Praesent tristique magna sit amet purus gravida quis.",
+	"cost": 199.99,
+	"shippingCost": 5.99,
+	"freeShipEligible": "true",
+	"shippingFrom": "Oklahoma, United States",
+	"shipTimeEst": "2 - 6 Days",
+	"shipReadyTime": "1-2 Business Days",
+	"dropDownTitle": "Select a Color",
+	"dropDownOptions": ["Snakeskin Black", "Snakeskin White", "Snakeskin Blue"],
+	"category": "Clothing",
+	"creator": "5ea8c5949a653850cc0d2f36"
+}
+
+{
+	"productName": "Healing Crystals",
+	"title": "Feel the sweet healing waves imminating from these bad boys!",
+	"picture": "",
+	"productDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sem integer vitae justo eget magna fermentum iaculis eu non. Pellentesque elit eget gravida cum. Praesent tristique magna sit amet purus gravida quis.",
+	"cost": 21.99,
+	"shippingCost": 5.99,
+	"freeShipEligible": "true",
+	"shippingFrom": "Oregon, United States",
+	"shipTimeEst": "2 - 6 Days",
+	"shipReadyTime": "1-2 Business Days",
+	"dropDownTitle": "Select a Chrystal",
+	"dropDownOptions": ["Blue Wave", "Himalayan Sea Salt Pink", "Emerald Green Masterpeice"],
+	"category": "Natural Healing",
 	"creator": "5ea8c58c9a653850cc0d2f35"
+}
+
+{
+	"productName": "Cat mouse toy",
+	"title": "Worlds greatest cat toy",
+	"picture": "https://i.imgur.com/Nxhy7JY.jpg",
+	"productDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sem integer vitae justo eget magna fermentum iaculis eu non. Pellentesque elit eget gravida cum. Praesent tristique magna sit amet purus gravida quis.",
+	"cost": 5.99,
+	"shippingCost": 2.99,
+	"freeShipEligible": "true",
+	"shippingFrom": "Ohio, United States",
+	"shipTimeEst": "2 - 4 Days",
+	"shipReadyTime": "1-2 Business Days",
+	"dropDownTitle": "Select a color",
+	"dropDownOptions": ["Blue", "Red", "Black", "White"],
+	"category": "Arts & Crafts",
+	"creator": "5ea8c5839a653850cc0d2f34"
 }

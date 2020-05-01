@@ -10,7 +10,24 @@ const mongoose = require('mongoose');
 //=================================================================================================================================
 // this will also associate the product id with the user that created it
 const createProduct = async(req,res,next) => {
-    const { productName, productDescription, cost, creator } = req.body;
+    // const { productName, productDescription, cost, creator } = req.body;
+    const { 
+        productName, 
+        title, 
+        picture, 
+        productDescription, 
+        cost, 
+        shippingCost, 
+        freeShipEligible, 
+        shippingFrom, 
+        shipTimeEst,
+        shipReadyTime,
+        dropDownTitle,
+        dropDownOptions,
+        category,
+        creator
+    } = req.body;
+
     // validate user input
     const errors = validationResult(req);
     if(!errors.isEmpty()){
@@ -21,12 +38,26 @@ const createProduct = async(req,res,next) => {
     }
 
     const createdProduct = new Product({
-        //remember, instead of { title: title }, we can just do { title } since the key value are both the same
         productName, 
+        title, 
+        picture, 
         productDescription, 
-        cost,
-        image:'https://i.imgur.com/Qx6AMQQ.jpg',
+        cost, 
+        shippingCost, 
+        freeShipEligible, 
+        shippingFrom, 
+        shipTimeEst,
+        shipReadyTime,
+        dropDownTitle,
+        dropDownOptions,
+        category,
         creator
+        //remember, instead of { title: title }, we can just do { title } since the key value are both the same
+        // productName, 
+        // productDescription, 
+        // cost,
+        // image:'https://i.imgur.com/Qx6AMQQ.jpg',
+        // creator
     });
 
     //============================================================
@@ -67,12 +98,12 @@ const createProduct = async(req,res,next) => {
         sess.startTransaction(); // start a transaction next
         console.log('transaction started');
         // need to provide our current session as an argument for our .save()
-        await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
-        // try {
-        //     await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        // await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
+        try {
+            await createdProduct.save({ session: sess }); //always add await before save since it is asynchronous
+        } catch (err) {
+            console.log(err);
+        }
         console.log('product saved');
 
         // --------------------------------------------------

@@ -15,8 +15,35 @@ router.post('/create',
         check('productName')
             .not()
             .isEmpty(),
+        check('title')
+            .not()
+            .isEmpty(),
         check('productDescription').isLength({min: 10}),
         check('cost')
+            .not()
+            .isEmpty(),
+        check('shippingCost')
+            .not()
+            .isEmpty(),
+        check('freeShipEligible')
+            .not()
+            .isEmpty(),
+        check('shippingFrom')
+            .not()
+            .isEmpty(),
+        check('shipTimeEst')
+            .not()
+            .isEmpty(),
+        check('shipReadyTime')
+            .not()
+            .isEmpty(),
+        check('dropDownTitle')
+            .not()
+            .isEmpty(),
+        check('dropDownOptions')
+            .not()
+            .isEmpty(),
+        check('category')
             .not()
             .isEmpty(),
         check('creator')
