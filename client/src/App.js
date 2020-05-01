@@ -5,7 +5,7 @@ import Product from './components/Product/Product'
 import Cart from './components/Cart/Cart'
 import CheckoutForm from './components/CheckoutForm/CheckoutForm'
 import './index.css'
-import logo from './logo.svg'
+// import logo from './logo.svg'
 
 
 
@@ -34,10 +34,10 @@ export default function App () {
     
     return (
         <div className="app">
-            <header className="app-header">
+            {/* <header className="app-header">
                 <img src={logo} className="app-logo" alt="logo" />
                 <h1 className="app-header-name">Jesse's Shop</h1>
-            </header>
+            </header> */}
             <main className="app-shop">
                 <div className="app-products">
                     {items.map(item => (

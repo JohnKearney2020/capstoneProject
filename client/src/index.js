@@ -2,25 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
-import BaseLayout from './componenets/layout/BaseLayout'
+import BaseLayout from './components/layout/BaseLayout'
+import Home from './components/Home'
 
 
 
 ReactDOM.render(
-  // <Provider store={store}>
+  
   <BrowserRouter>
       <BaseLayout>
        
         <Switch>
         
           <Route exact path="/" component={Home} />
-          <Route exact path="/cart" component={Cart} />
+          <Route  path="/app" component={App} />
+          {/* <Route exact path="/cart" component={Cart} /> */}
          
         </Switch>
       </BaseLayout>
-    </BrowserRouter>
-    // </Provider>
-    ,
+    </BrowserRouter>,
   document.getElementById('root')
 );
 
