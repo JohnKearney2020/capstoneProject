@@ -59,6 +59,7 @@ router.delete('/delete/:pid', productControllers.deleteProduct);
 //===========================================================
 router.get('/getbyuserid/:uid', productControllers.getProductsByUserId)
 
+// base path: /api/products/
 //===========================================================
 //                  Update Product Information
 //===========================================================
@@ -96,6 +97,7 @@ router.patch('/id/:pid',
     ],
     productControllers.updateProduct
 );
+
 
 
 module.exports = router; // we export this to our app.js file

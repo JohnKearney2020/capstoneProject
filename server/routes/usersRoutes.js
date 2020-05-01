@@ -80,5 +80,15 @@ router.get('/getall', usersControllers.getAllUsers);
 //===========================================================
 router.post('/login', usersControllers.userLogin);
 
+// remember, the root of this route is '/api/users/'
+//===========================================================
+//                  Add a Product to User Wishlist
+//===========================================================
+router.post('/wishlist/:uid',
+    check('productId')
+        .not()
+        .isEmpty(),
+    usersControllers.addProductToWishList
+)
 
 module.exports = router; // we export this to our app.js file

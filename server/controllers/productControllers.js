@@ -122,8 +122,8 @@ const createProduct = async(req,res,next) => {
         );
         return next(error); // needed to prevent further code execution on an error.
     }
-
-    res.status(201).json({product: createdProduct}); // 201 is the standard response code if something *new* was sucessfully created on the server
+    // res.status(201).json({product: createdProduct}); 
+    res.status(201).json({product: createdProduct.toObject({ getters: true })}); // 201 is the standard response code if something *new* was sucessfully created on the server
     
 }
 
@@ -263,9 +263,6 @@ const updateProduct = async (req,res,next) => {
     }
     res.status(200).json({product: product.toObject({ getters: true })}); // 200 since nothing new was created
 }
-
-
-
 
 exports.createProduct = createProduct;
 exports.deleteProduct = deleteProduct;

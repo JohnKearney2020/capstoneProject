@@ -14,7 +14,7 @@
 	"dropDownTitle": "",
 	"dropDownOptions": [],
 	"category": "Clothing",
-	"creator": "5ea8c59c9a653850cc0d2f37"
+	"creator": "5eac7b29a279a160c8e0bbc0"
 }
 
 {
@@ -31,7 +31,7 @@
 	"dropDownTitle": "Select a Color",
 	"dropDownOptions": ["Snakeskin Black", "Snakeskin White", "Snakeskin Blue"],
 	"category": "Clothing",
-	"creator": "5ea8c5949a653850cc0d2f36"
+	"creator": "5eac7b36a279a160c8e0bbc1"
 }
 
 {
@@ -48,7 +48,7 @@
 	"dropDownTitle": "Select a Chrystal",
 	"dropDownOptions": ["Blue Wave", "Himalayan Sea Salt Pink", "Emerald Green Masterpeice"],
 	"category": "Natural Healing",
-	"creator": "5ea8c58c9a653850cc0d2f35"
+	"creator": "5eac7b3fa279a160c8e0bbc2"
 }
 
 {
@@ -65,5 +65,5 @@
 	"dropDownTitle": "Select a color",
 	"dropDownOptions": ["Blue", "Red", "Black", "White"],
 	"category": "Arts & Crafts",
-	"creator": "5ea8c5839a653850cc0d2f34"
+	"creator": "5eac7b53a279a160c8e0bbc3"
 }
