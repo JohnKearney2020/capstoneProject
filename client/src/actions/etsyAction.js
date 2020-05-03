@@ -11,7 +11,7 @@ export const getEtsyItems = () => async dispatch => {
 
   
       
-       await fetch("https://community-etsy.p.rapidapi.com/listings/active?api_key=w4mv8soose78gb7bu5lup3k7&limit=100&includes=MainImage", {
+       await fetch("https://community-etsy.p.rapidapi.com/listings/active?api_key=w4mv8soose78gb7bu5lup3k7&limit=12&includes=MainImage", {
         "method": "GET",
         "headers": {
         "x-rapidapi-host": "community-etsy.p.rapidapi.com",
