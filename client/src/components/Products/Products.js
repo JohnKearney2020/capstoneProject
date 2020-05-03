@@ -1,57 +1,49 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { addToCart } from "../../actions/cartActions";
+import {getEtsyItems} from "../../actions/etsyAction"
+import PropTypes from 'prop-types';
+import axios from 'axios'
 
-function Product(props) {
-  let { id, resizeTo, price, rating, numOfRev } = props;
+const Products =({getEtsyItems})=>{
 
-  let data = { id, resizeTo, price, rating, numOfRev };
-
-  console.log(data);
+  useEffect(() => {
+    getEtsyItems()
+  //   let api = 'https://jsonplaceholder.typicode.com/todos/1'
+  //   fetch(api)
+  //   .then((res)=>{
+  //     console.log(res.json())
+    
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err)
+  //   })
+   }, []);
   return (
     <div className="product">
-      <Link to={"/product/" + id}>
-        <h2 className="product-Title">{resizeTo}</h2>
-      </Link>
-
-      <div className="product-price">${price}</div>
-      <div className="product-price">{rating}</div>
-      <div className="product-price">{numOfRev}</div>
-
-      <button
-        className="product-buy-button"
-        onClick={(data) => {
-          console.log("button clicked", data);
-          props.add(data);
-        }}
-      >
-        Add to Cart
-      </button>
-
-      {props.cart.cartItems.map((item) => {
-        return (
-          <li key={item.id}>
-            {item.title} | {item.price}
-          </li>
-        );
-      })}
+     HELLO WORLD
     </div>
   );
 }
 
 let mapStateToProps = (state) => {
   return {
-    cart: state.cart,
+    
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    add: (cartObj) => dispatch(addToCart(cartObj)),
+    getEtsyItems: () => dispatch(getEtsyItems()),
   };
 };
+  getEtsyItems.propTypes = {
+  
+  getEtsyItems: PropTypes.func.isRequired,
+  
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);
 
-// export default Product;
+
