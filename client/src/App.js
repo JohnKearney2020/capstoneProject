@@ -8,7 +8,7 @@ import './index.css'
 // import logo from './logo.svg'
 import React from 'react'
 import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-import BaseLayout from './components/Layout/BaseLayout'
+import BaseLayout from './components/layout/BaseLayout'
 import ShoppingCart from './components/ShoppingCart/ShoppingCart'
 import Home from './components/Home/Home'
 import ProductView from './components/ProductsView/ProductView'
