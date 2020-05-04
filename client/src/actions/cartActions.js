@@ -1,28 +1,35 @@
-import items from "../api/api-items";
-import Cookie from "js-cookie";
+
 import {
   ADD_ITEM,
   REMOVE_ITEM,
   SAVE_SHIPPING_DET,
   SAVE_PAYMENT_DET,
 } from "../actionTypes/cartActionTypes";
+import Axios from "axios";
+import Cookie from 'js-cookie'
 
-const addToCart = (cartObject) => async (dispatch) => {
+const addToCart = (productId, qty) => async (dispatch, getState) => {
   try {
-    //send product/etsy object
-    // {id, name, description, price, imge}
-
-    console.log("action data: ", cartObject);
-    dispatch({
-      type: ADD_ITEM,
-      payload: cartObject,
-    });
+    const { data } = await Axios.get("/api/products/" + productId);
+    dispatch({type: ADD_ITEM, payload : {
+      product: data._id,
+      name: data.title,
+      image: data.image,
+      price: data.price,
+      qtyInStock : data.qtyInStock, 
+      qty
+    }});
+    const { cart:{cartItems}} =getState()
+    Cookie.set("cartItems", JSON.stringify(cartItems))
   } catch (error) {}
 };
 
-const removeItem = (cartId) => async (dispatch) => {
+const removeItem = (productId) => async (dispatch, getState) => {
   //remove from redux
-  dispatch({ type: REMOVE_ITEM, payload: cartId });
+  dispatch({ type: REMOVE_ITEM, payload: productId });
+
+  const { cart:{cartItems}} =getState()
+    Cookie.set("cartItems", JSON.stringify(cartItems))
 };
 
 //shipping
