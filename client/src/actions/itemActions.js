@@ -1,4 +1,4 @@
-import { PULL_ITEMS, PULL_ITEMS_SUCCESS, PULL_ITEMS_FAILED, ITEM_DETAILS_PULL, ITEM_DETAILS_SUCCESS, ITEM_DETAILS_FAILED, SAVE_ITEM, SAVE_ITEM_SUCCESS } from "../actionTypes/itemActionTypes"
+import { PULL_ITEMS, PULL_ITEMS_SUCCESS, PULL_ITEMS_FAILED, ITEM_DETAILS_PULL, ITEM_DETAILS_SUCCESS, ITEM_DETAILS_FAILED, SAVE_ITEM, SAVE_ITEM_SUCCESS, SAVE_ITEM_FAILED } from "../actionTypes/itemActionTypes"
 import axios from 'axios'
 
 const listItems  = () => async (dispatch) =>{
@@ -20,7 +20,7 @@ const detailsItem = (productId) => async (dispatch) =>{
                 dispatch({type: ITEM_DETAILS_FAILED, payload : error.message})
         }
 }
-const saveItem = (product) => async (dispatch, getState) =>{
+const itemSave = (product) => async (dispatch, getState) =>{
         try {
                 dispatch({ type : SAVE_ITEM, payload: product})
                 const { userSignIn : {userDetails}} = getState()
@@ -30,10 +30,10 @@ const saveItem = (product) => async (dispatch, getState) =>{
                 }})
                 dispatch({ type: SAVE_ITEM_SUCCESS, payload : data})
         } catch (error) {
-                
+                dispatch({ type: SAVE_ITEM_FAILED, payload : error.message})
         }
 }
 
 
 
-export { listItems, detailsItem }
+export { listItems, detailsItem, itemSave }
