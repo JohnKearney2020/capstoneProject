@@ -1,6 +1,10 @@
 import thunk from "redux-thunk";
 import Cookie from "js-cookie";
+import rootReducers from './reducers'
 
+import { createStore, applyMiddleware, compose } from "redux";
+
+<<<<<<< HEAD
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { itemListReducer, saveItemReducer, deleteItemReducer, itemDetailsReducer} from "./reducers/itemReducers";
 import { cartReducer } from "./reducers/cartReducer";
@@ -11,10 +15,16 @@ import { createOrderReducer,
         orderListReducer,
         payOrderReducer,
         deleteOrderReducer } from './reducers/ordersReducers';
+=======
+
+
+
+>>>>>>> TemplateSites
 
 const cartItems = Cookie.getJSON("cartItems") || [];
 const userDetails = Cookie.getJSON("userDetails") || null;
 
+<<<<<<< HEAD
 const initialState = { cart : {cartItems, shipping : {}, payment: {}}, userSignIn:{userDetails}}
 const rootReducers = combineReducers({
   itemList: itemListReducer,
@@ -34,6 +44,11 @@ const rootReducers = combineReducers({
 
   
 });
+=======
+const intitialState = {}
+
+
+>>>>>>> TemplateSites
 
 const enhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
