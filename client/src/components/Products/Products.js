@@ -14,15 +14,22 @@ import './Products.css'
 
 
 
+
  class Products extends Component {
 
   constructor(props) {
     super(props)
+    this.handlePageChange = this.handlePageChange.bind(this);
     this.state = {
         etsyProducts:[]
     }
     
 }
+handlePageChange() {
+  window.location.hash = "/product/:id";
+}
+
+
 componentDidMount = (params)=>{
     this.props.getEtsyItems()
   
@@ -36,7 +43,11 @@ componentWillReceiveProps(nextProps, nextContext) {
 }
 
 
-
+// routeChange=()=> {
+//   let path = "/product/:id";
+//   let history = useHistory();
+//   history.push(path);
+// }
 
 
 
@@ -56,7 +67,7 @@ render() {
              <p >
              <span>${product.price}</span>
              </p>
-             <a href="#" className="btn btn-primary"  type="button">View Detail </a>
+             <a href="/product/:id" className="btn btn-primary" onClick={this.handlePageChange} type="button">View Detail </a>
              </div>
     
           </div>
