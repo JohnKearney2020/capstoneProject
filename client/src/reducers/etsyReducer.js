@@ -11,7 +11,10 @@ function etsyReducer(
       case LIST_ETSY_PRODUCTS:
         return {
           ...state,
-          etsy: {etsy: {items:state.etsy.items.concat(action.payload),message:"success"}},
+          etsy: { // removed second etsy object that was wrapped around?? see below 
+            items:action.payload,
+            message:"success"
+          },
         };
        case  LIST_ETSY_FAILED:
         return {

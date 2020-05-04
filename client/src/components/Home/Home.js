@@ -17,6 +17,9 @@ function Home() {
     const { products, loading, error} = itemList;
     const dispatch = useDispatch();
 
+    console.log("Checking error for Home component on Client Side")
+    console.log(error)
+
     useEffect(() => {
 
         dispatch(listItems())
@@ -27,20 +30,16 @@ function Home() {
     }, [])
     
     return (
-        loading? <div>Loading...</div> : error? <div>{error}</div> :
-    <div className="app">
+        loading? <div>Loading...</div> :
+   ( <div className="app">
         <main className="app-shop">
             
             <div className="app-products">
-                {/* {products.map(item => (
-
-                    <Products key={item.title} title={item.title} price={item.price} rating={item.rating} numOfRev={item.numOfRev} id={item._id}/>
-
-                ))} */}
+                
             <Products />
             </div>
         </main>
-    </div>
+    </div>)
     );
     
 }

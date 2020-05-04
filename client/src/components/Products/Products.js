@@ -17,47 +17,52 @@ import './Products.css'
 
  class Products extends Component {
 
-  constructor(props) {
-    super(props)
-    this.handlePageChange = this.handlePageChange.bind(this);
-    this.state = {
-        etsyProducts:[]
-    }
-    
-}
+  // constructor(props) {
+  //   super(props)
+  //   this.handlePageChange = this.handlePageChange.bind(this);
+  //   this.state = {
+  //       etsyProducts:[]
+  //   }
+// }
+
 handlePageChange() {
   window.location.hash = "/product/:id";
 }
 
 
-componentDidMount = (params)=>{
+componentDidMount() {
     this.props.getEtsyItems()
   
 }
-componentWillReceiveProps(nextProps, nextContext) {
-  console.log(nextProps.products.etsy.items[0].results)
-  this.setState({
-    ...this.state,
-    etsyProducts: nextProps.products.etsy.items[0].results
-  })
-}
+// componentWillReceiveProps(nextProps, nextContext) {
+//   console.log("Looking for results in componentWillReceiveProps on Products.js component")
+//   // console.log(nextProps)
+//   console.log(nextProps.products.etsy)
 
-
-// routeChange=()=> {
-//   let path = "/product/:id";
-//   let history = useHistory();
-//   history.push(path);
+//   // console.log(nextProps.products.etsy.items[0].results)
+//   // this.setState({
+//   //   ...this.state,
+//   //   etsyProducts: product
+//   // })
 // }
+
+
+
+
 
 
 
 render() {
 
   //this.props.products.price 
+  console.log("Looking for props")
+  console.log(this.props.products.results)
 
-  let addedProducts = this.state.etsyProducts.length ?
+  let results = this.props.products.results;
+
+  let addedProducts = results ?
   (  
-      this.state.etsyProducts.map((product,index)=>{
+    this.props.products.results.map((product,index)=>{
           return(
              
             <div  key ={index} className="card">
@@ -74,35 +79,41 @@ render() {
                
           )
       })
-  ):
+  ): undefined || null
 
-   (
-      <p>Nothing.</p>
-   )
+  //  (
+  //     <p>Nothing.</p>
+  //  )
   return (
     <div className="container">
     <h3 className="center"> Products</h3>
     <div className="box">
         {addedProducts}
+        {/* <p>This is a test</p> */}
     </div>
 </div> 
   )
 }
 }
 
+Products.propTypes = {
+  products: PropTypes.object.isRequired,
+  getEtsyItems: PropTypes.func.isRequired
+}
+
 
 let mapStateToProps = (state) => {
   return {
-    products: state.etsyReducer.etsy
+    products: state.etsyReducer.etsy.items
   };
 };
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    getEtsyItems: () => dispatch(getEtsyItems()),
-  };
-};
+// let mapDispatchToProps = (dispatch) => {
+//   return {
+//     getEtsyItems: () => dispatch(getEtsyItems()),
+//   };
+// };
   
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, {getEtsyItems})(Products);
 
 
