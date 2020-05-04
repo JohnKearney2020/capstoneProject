@@ -1,0 +1,4 @@
+export const ADD_ITEM = 'ADD_ITEM'
+export const REMOVE_ITEM = 'REMOVE_ITEM'
+export const SAVE_SHIPPING_DET = 'SAVE_SHIPPING_DET'
+export const SAVE_PAYMENT_DET = 'SAVE_PAYMENT_DET'

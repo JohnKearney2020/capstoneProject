@@ -8,7 +8,8 @@ export default{
         price: 50,
         category: "Essentials",
         rating : 4.5,
-        numOfRev : 5
+        numOfRev : 5,
+        qtyInStock: 6
     },
     {
         _id: '2',
@@ -16,7 +17,8 @@ export default{
         price: 80,
         category: "Essentials",
         rating: 4.5,
-        numOfRev : 5
+        numOfRev : 5,
+        qtyInStock: 7
     },
     {
         _id: '3',
@@ -24,7 +26,8 @@ export default{
         price: 1000000,
         category: "Essentials",
         rating : 4.5,
-        numOfRev : 5
+        numOfRev : 5,
+        qtyInStock: 0
     },
         ]
     }

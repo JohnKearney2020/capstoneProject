@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+<<<<<<< HEAD
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import BaseLayout from './components/layout/BaseLayout'
 import Home from './components/Home'
@@ -21,6 +22,18 @@ ReactDOM.render(
         </Switch>
       </BaseLayout>
     </BrowserRouter>,
+=======
+import { Provider } from 'react-redux'
+import store from './store'
+
+
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App /> 
+  </Provider>
+    ,
+>>>>>>> TemplateSite
   document.getElementById('root')
 );
 
