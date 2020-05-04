@@ -10,7 +10,6 @@ import {
 function cartReducer(state = {cartItems : []}, action){
   switch(action.type) {
     case ADD_ITEM:
-<<<<<<< HEAD
       const item = action.payload
       const product = state.cartItems.find(param => param.product === item.product);
       if(product){
@@ -29,38 +28,10 @@ function cartReducer(state = {cartItems : []}, action){
         return { ...state, paymentDetails: action.payload };
       default:
         return state;
-=======
-      return {
-        ...state,
-        cartItems: state.cartItems.concat(action.payload),
-      };
-    
-    case REMOVE_ITEM:
-      return {
-        ...state,
-        cartItems: state.cartItems.filter(
-          (obj) => obj.id !== action.payload.id
-        ),
-      };
-    case "CLEAR_CART":
-      return {
-        ...state,
-        cartItems: [],
-        shipping: {},
-        payment: {},
-      };
-    case SAVE_SHIPPING_DET:
-      return { ...state, shipping: action.payload };
-    case SAVE_PAYMENT_DET:
-      return { ...state, payment: action.payload };
-    default:
-      return state;
->>>>>>> TemplateSites
   }
 }
 
 
-<<<<<<< HEAD
   export { cartReducer };
 
 
@@ -114,5 +85,3 @@ function cartReducer(state = {cartItems : []}, action){
 
 ///
 
-=======
->>>>>>> TemplateSites

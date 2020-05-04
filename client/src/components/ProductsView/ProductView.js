@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, {useEffect, useState} from "react";
 import items from "../../api/api-items";
 import { Link } from "react-router-dom";
@@ -78,18 +77,20 @@ function ProductView(props) {
 
     </>
   );
-=======
+                          }
 
-import React, { Component } from 'react'
-import { connect} from 'react-redux'
-import { Link } from 'react-router-dom'
-// import { ButtonContainer } from "./Button";
-import { addToCart } from "../../actions/cartActions";
+  export default ProductView
 
-export class ProductView extends Component {
-  render() {
+// import React, { Component } from 'react'
+// import { connect} from 'react-redux'
+// import { Link } from 'react-router-dom'
+// // import { ButtonContainer } from "./Button";
+// import { addToCart } from "../../actions/cartActions";
+
+// export class ProductView extends Component {
+//   render() {
     
-    return (
+//     return (
       // <div className="container py-5">
       //         {/* title */}
       //         <div className="row">
@@ -137,12 +138,11 @@ export class ProductView extends Component {
             //     </div>
             //   </div>
             // </div>
-    )
-  }
->>>>>>> TemplateSites
-}
+//     )
+//   }
+// }
 
-export default connect(ProductView)
+// export default connect(ProductView)
 
 
 
