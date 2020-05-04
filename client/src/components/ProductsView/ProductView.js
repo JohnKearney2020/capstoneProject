@@ -13,6 +13,7 @@ function ProductView(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("Id is ", props.match.params.id)
     dispatch(detailsItem(props.match.params.id))
     return () => {
       //
@@ -33,7 +34,7 @@ function ProductView(props) {
               <Container>
               <Row className="product-details">
                 <Col className="product-image">
-                  <img src={product.image} alt="product"></img>
+                  {/* <img src={product.MainImage.url_570xN} alt={product.image}></img> */}
                 </Col>
                 <Col className="details-info">
                   <ul>
