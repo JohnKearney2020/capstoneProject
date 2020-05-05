@@ -17,7 +17,7 @@ function Product({id, title, price, numOfRev, rating}) {
 
       <button
         className="product-buy-button">
-        Add to Cart
+        <Link to={"/product/"+ id }  >Add to Cart</Link>
       </button>
     </div>
   );
