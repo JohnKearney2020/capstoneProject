@@ -12,7 +12,7 @@ import Home from './components/Home/Home'
 import ProductView from './components/ProductsView/ProductView'
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register'
-
+import CreateProduct from './components/CreateProduct/CreateProduct'
 
 
 function App () {
@@ -28,6 +28,7 @@ function App () {
                     <Route path='/cart/:id?' component={ShoppingCart}/> 
                     <Route path="/signin" component={SignIn} />
                     <Route path="/register" component={Register}/>
+                    <Route path="/createproduct" component={CreateProduct}/>
                 </Switch>
             </BaseLayout>
         </BrowserRouter>
