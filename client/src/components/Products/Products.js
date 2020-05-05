@@ -66,7 +66,7 @@ render() {
           return(
              
             <div  key ={index} className="card">
-             <img className="card-img-top" src={product.MainImage.url_570xN} alt={product.image}height="300px"></img>
+             <img className="card-img-top" src={product.MainImage.url_570xN} alt={product.image} height="300px"></img>
              <div className="card-body">
              <h5 className="card-title">{product.title}</h5>
              <p >
@@ -114,7 +114,7 @@ let mapStateToProps = (state) => {
 //     getEtsyItems: () => dispatch(getEtsyItems()),
 //   };
 // };
-  
+  //jfhjfoj
 export default connect(mapStateToProps, {getEtsyItems})(Products);
 
 
