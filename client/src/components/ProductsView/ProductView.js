@@ -10,10 +10,10 @@ function ProductView(props) {
 
   const itemDetails = useSelector(state => state.itemDetails)
   const { product, loading, error } = itemDetails;
+  console.log("This is Product", product)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Id is ", props.match.params.id)
     dispatch(detailsItem(props.match.params.id))
     return () => {
       //
@@ -34,12 +34,10 @@ function ProductView(props) {
               <Container>
               <Row className="product-details">
                 <Col className="product-image">
-                  {/* <img src={product.MainImage.url_570xN} alt={product.image}></img> */}
-                </Col>
-                <Col className="details-info">
+                  <img src={product.MainImage ? product.MainImage.url_570xN : "null"} alt={product.image}></img>
                   <ul>
-                    <li>
-                      <b>{product.title}</b>
+                     <li> 
+                       <b>{product.title}</b>
                     </li>
                     <li>
                       {product.rating} Stars ({product.numOfRev}) Reviews
@@ -53,19 +51,19 @@ function ProductView(props) {
                 <Col className="cart-action">
                   <Card border="dark" style={{ width: "18rem", padding: "1rem" }}>
                     <ul>
-                      <li> Price : {product.price}</li>
-                      <li> Status : {product.qtyInStock > 0? "In Stock" : "Unavailable"}</li>
+                      <li> Price : ${product.price}</li>
+                      <li> Status : {product.state} </li>
                       <li>
                         {" "}
                         Qty :
-                        <select vaue ={qty} onChange={ (e)=> { setQty( e.target.value ) }}>
+                        <select value ={qty} onChange={ (e)=> { setQty( e.target.value ) }}>
                           {[...Array(product.qtyInStock).keys()].map(param =>
                             <option key={param + 1} value={ param + 1 }>{ param + 1 }</option>
                             )}
                         </select>
                       </li>
                       <li>
-                        {product.qtyInStock > 0 &&
+                        {product.state > 0 &&
                         <Button variant="success" onClick={handleAdd2Cart}>Add To Cart</Button> 
                             }
                       </li>
@@ -81,69 +79,6 @@ function ProductView(props) {
                           }
 
   export default ProductView
-
-// import React, { Component } from 'react'
-// import { connect} from 'react-redux'
-// import { Link } from 'react-router-dom'
-// // import { ButtonContainer } from "./Button";
-// import { addToCart } from "../../actions/cartActions";
-
-// export class ProductView extends Component {
-//   render() {
-    
-//     return (
-      // <div className="container py-5">
-      //         {/* title */}
-      //         <div className="row">
-      //           <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
-      //             <h1>{product.title}</h1>
-      //           </div>
-      //         </div>
-      //         {/* End of title */}
-      //         {/* product info */}
-      //         <div className="row">
-      //           <div className="col-10 mx-auto col-md-6 my-3">
-      //             <img src={product.MainImage.url_570xN} alt={product.image} className="img-fluid"  />
-      //           </div>
-      //           {/* product text */}
-      //           <div className="col-10 mx-auto col-md-6 my-3 text-capitalize">
-      //             <h2>model: {product.title}</h2>
-                  
-      //             <h4 className="text-blue">
-      //               <strong>
-      //                 price : <span>$</span> {product.price}
-      //               </strong>
-      //             </h4>
-      //             <p className="text-capitalize font-weight-bold mt-3 mb-0">
-      //               product description:
-      //             </p>
-      //             <p className="text-muted lead">{product.description}</p>
-      //             {/* buttons */}
-      //             <div>
-      //             <a href="/" className="btn btn-primary"  type="button"> Back To Product </a>
-      //             <a href="#" className="btn btn-primary"  type="button"> Add To Cart </a>
-                    {/* <Link to="/">
-                      <ButtonContainer>back to products</ButtonContainer>
-                    </Link>
-                    <ButtonContainer
-                      cart
-                      disabled={inCart ? true : false}
-                      onClick={() => {
-                        value.addToCart(id);
-                        value.openModal(id);
-                      }}
-                    >
-                      {inCart ? "in Cart" : "add to cart"}
-                    </ButtonContainer> */}
-            //       </div>
-            //     </div>
-            //   </div>
-            // </div>
-//     )
-//   }
-// }
-
-// export default connect(ProductView)
 
 
 

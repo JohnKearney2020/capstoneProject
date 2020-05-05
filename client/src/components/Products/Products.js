@@ -1,5 +1,5 @@
 import React,{useEffect,Component} from "react";
-import {  useHistory } from "react-router-dom";
+import {  useHistory, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { addToCart } from "../../actions/cartActions";
 import {getEtsyItems} from "../../actions/etsyAction"
@@ -66,13 +66,14 @@ render() {
           return(
              
             <div  key ={index} className="card">
-             <img className="card-img-top" src={product.MainImage.url_570xN} alt={product.image}height="300px"></img>
+             <img className="card-img-top" src={product.MainImage.url_570xN} alt={product.image} height="300px"></img>
              <div className="card-body">
              <h5 className="card-title">{product.title}</h5>
              <p >
              <span>${product.price}</span>
              </p>
-             <a href="/product/:id" className="btn btn-primary" onClick={this.handlePageChange} type="button">View Detail </a>
+             {/* <Link href="/product/:id" className="btn btn-primary" onClick={this.handlePageChange} type="button">View Detail </Link> */}
+             <Link to={`/product/${product.listing_id}`} className="btn btn-primary" type="button">View Detail </Link>
              </div>
     
           </div>
@@ -113,7 +114,7 @@ let mapStateToProps = (state) => {
 //     getEtsyItems: () => dispatch(getEtsyItems()),
 //   };
 // };
-  
+  //jfhjfoj
 export default connect(mapStateToProps, {getEtsyItems})(Products);
 
 
