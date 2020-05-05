@@ -10,10 +10,10 @@ function ProductView(props) {
 
   const itemDetails = useSelector(state => state.itemDetails)
   const { product, loading, error } = itemDetails;
+  console.log("This is Product", product)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Id is ", props.match.params.id)
     dispatch(detailsItem(props.match.params.id))
     return () => {
       //
@@ -34,12 +34,10 @@ function ProductView(props) {
               <Container>
               <Row className="product-details">
                 <Col className="product-image">
-                  {/* <img src={product.MainImage.url_570xN} alt={product.image}></img> */}
-                </Col>
-                <Col className="details-info">
+                  <img src={product.MainImage ? product.MainImage.url_570xN : "null"} alt={product.image}></img>
                   <ul>
-                    <li>
-                      <b>{product.title}</b>
+                     <li> 
+                       <b>{product.title}</b>
                     </li>
                     <li>
                       {product.rating} Stars ({product.numOfRev}) Reviews
@@ -54,18 +52,18 @@ function ProductView(props) {
                   <Card border="dark" style={{ width: "18rem", padding: "1rem" }}>
                     <ul>
                       <li> Price : {product.price}</li>
-                      <li> Status : {product.qtyInStock > 0? "In Stock" : "Unavailable"}</li>
+                      <li> Status : {product.state} </li>
                       <li>
                         {" "}
                         Qty :
-                        <select vaue ={qty} onChange={ (e)=> { setQty( e.target.value ) }}>
+                        <select value ={qty} onChange={ (e)=> { setQty( e.target.value ) }}>
                           {[...Array(product.qtyInStock).keys()].map(param =>
                             <option key={param + 1} value={ param + 1 }>{ param + 1 }</option>
                             )}
                         </select>
                       </li>
                       <li>
-                        {product.qtyInStock > 0 &&
+                        {product.state > 0 &&
                         <Button variant="success" onClick={handleAdd2Cart}>Add To Cart</Button> 
                             }
                       </li>
